@@ -31,5 +31,12 @@ namespace MyProfile.Controllers
 			var result = await _userManager.Users.AnyAsync(u => u.Email == email && u.Id != id);
 			return result ? Json($"Email {email} is already in use") : Json(true);
 		}
+
+		[HttpGet, HttpPost]
+		public async Task<IActionResult> IsUsernameInUse(string username)
+		{
+			var user = await _userManager.FindByNameAsync(username);
+			return user == null ? Json(true) : Json($"Username '{username}' is already in use");
+		}
 	}
 }

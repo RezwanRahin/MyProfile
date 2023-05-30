@@ -38,5 +38,12 @@ namespace MyProfile.Controllers
 			var user = await _userManager.FindByNameAsync(username);
 			return user == null ? Json(true) : Json($"Username '{username}' is already in use");
 		}
+
+		[HttpGet, HttpPost]
+		public async Task<IActionResult> IsUsernameOfOther(string username, string id)
+		{
+			var result = await _userManager.Users.AnyAsync(u => u.UserName == username && u.Id != id);
+			return result ? Json($"Username '{username}' is already in use") : Json(true);
+		}
 	}
 }

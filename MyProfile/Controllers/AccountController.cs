@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MyProfile.Models;
 
 namespace MyProfile.Controllers
@@ -22,6 +23,13 @@ namespace MyProfile.Controllers
 		{
 			var user = await _userManager.FindByEmailAsync(email);
 			return user == null ? Json(true) : Json($"Email {email} is already in use");
+		}
+
+		[HttpGet, HttpPost]
+		public async Task<IActionResult> IsEmailOfOther(string email, string id)
+		{
+			var result = await _userManager.Users.AnyAsync(u => u.Email == email && u.Id != id);
+			return result ? Json($"Email {email} is already in use") : Json(true);
 		}
 	}
 }

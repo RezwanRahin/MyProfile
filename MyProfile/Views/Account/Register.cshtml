@@ -1,0 +1,67 @@
+@model RegisterUserViewModel
+
+@{
+	ViewData["Title"] = "User Registration";
+}
+
+<div class="container mt-3">
+	<h1><br>User Registration<br></h1>
+	<form method="post">
+		<div class="my-4">
+			<div asp-validation-summary="All" class="text-danger"></div>
+			<div class="form-floating mt-3 mb-3">
+				<input asp-for="FirstName" class="form-control" />
+				<label asp-for="FirstName"></label>
+				<span asp-validation-for="FirstName" class="text-danger"></span>
+			</div>
+			<div class="form-floating mt-3 mb-3">
+				<input asp-for="LastName" class="form-control" />
+				<label asp-for="LastName"></label>
+				<span asp-validation-for="LastName" class="text-danger"></span>
+			</div>
+			<div class="form-floating mt-3 mb-3">
+				<input asp-for="Email" class="form-control" />
+				<label asp-for="Email"></label>
+				<span asp-validation-for="Email" class="text-danger"></span>
+			</div>
+			<div class="form-floating mt-3 mb-3">
+				<input asp-for="Username" class="form-control" />
+				<label asp-for="Username"></label>
+				<span asp-validation-for="Username" class="text-danger"></span>
+			</div>
+			<div class="d-inline">
+				Gender:
+				@foreach (var g in System.Enum.GetValues((typeof(Gender))))
+				{
+					<div class="form-check form-check-inline">
+						<label>
+							@(Html.RadioButtonFor<Gender>(m => m.Gender, (Gender)g, null))
+							@g
+						</label>
+					</div>
+				}
+			</div>
+			<div class="form-floating mt-3 mb-3">
+				<input asp-for="DOB" class="form-control" />
+				<label asp-for="DOB"></label>
+				<span asp-validation-for="DOB" class="text-danger"></span>
+			</div>
+			<div class="form-floating mt-3 mb-3">
+				<input asp-for="Password" class="form-control" />
+				<label asp-for="Password"></label>
+				<span asp-validation-for="Password" class="text-danger"></span>
+			</div>
+			<div class="form-floating mt-3 mb-3">
+				<input asp-for="ConfirmPassword" class="form-control" />
+				<label asp-for="ConfirmPassword"></label>
+				<span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+			</div>
+		</div>
+		<button type="submit" class="btn btn-primary">Register</button>
+	</form>
+</div>
+
+@section Scripts
+	{
+	<partial name="_ValidationScriptsPartial" />
+}

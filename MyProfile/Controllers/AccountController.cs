@@ -67,5 +67,38 @@ namespace MyProfile.Controllers
 		{
 			return View();
 		}
+
+		[HttpPost]
+		public async Task<IActionResult> Register(RegisterUserViewModel model)
+		{
+			if (!ModelState.IsValid)
+			{
+				return View(model);
+			}
+
+			var user = new ApplicationUser
+			{
+				FirstName = model.FirstName,
+				LastName = model.LastName,
+				Email = model.Email,
+				UserName = model.Username,
+				Gender = model.Gender,
+				DOB = model.DOB
+			};
+
+			var result = await _userManager.CreateAsync(user, model.Password);
+
+			if (result.Succeeded)
+			{
+				await _signInManager.SignInAsync(user, isPersistent: false);
+				return RedirectToAction("Index", "Home");
+			}
+
+			foreach (var error in result.Errors)
+			{
+				ModelState.AddModelError(string.Empty, error.Description);
+			}
+			return View(model);
+		}
 	}
 }

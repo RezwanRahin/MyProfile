@@ -1,0 +1,32 @@
+@model LoginViewModel
+
+@{
+	ViewData["Title"] = "User Login";
+}
+
+<div class="container">
+	<div class="card">
+		<div class="d-flex justify-content-center">
+			<h4>Login</h4>
+		</div>
+		<form method="post">
+			<div asp-validation-summary="All" class="text-danger"></div>
+			<div class="form form-floating mt-3 mb-3">
+				<input asp-for="Identifier" class="form-control" />
+				<label asp-for="Identifier"></label>
+				<span asp-validation-for="Identifier" class="text-danger"></span>
+			</div>
+			<div class="form form-floating mt-3 mb-3">
+				<input asp-for="Password" class="form-control" />
+				<label asp-for="Password"></label>
+				<span asp-validation-for="Password" class="text-danger"></span>
+			</div>
+			<div class="form form-floating mt-3 mb-3">
+				<input asp-for="RememberMe" />
+				@* <label asp-for="RememberMe"></label> *@
+				@Html.DisplayNameFor(m => m.RememberMe)
+			</div>
+			<button type="submit" class="btn btn-success w-100">Login</button>
+		</form>
+	</div>
+</div>

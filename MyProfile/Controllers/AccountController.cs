@@ -139,5 +139,38 @@ namespace MyProfile.Controllers
 			await _signInManager.SignOutAsync();
 			return RedirectToAction("Index", "Home");
 		}
+
+		[Route("[controller]/[action]/{username}")]
+		public async Task<IActionResult> Details(string username)
+		{
+			var user = await _userManager.FindByNameAsync(username);
+
+			if (user == null)
+			{
+				Response.StatusCode = 404;
+				ViewBag.ErrorMessage = $"User with Username = {username} cannot be found";
+				return View("NotFound");
+			}
+
+			var model = new UserDetailsViewModel
+			{
+				FirstName = user.FirstName,
+				LastName = user.LastName,
+				Email = user.Email,
+				Username = user.UserName,
+				Gender = user.Gender,
+				DOB = user.DOB,
+				PhotoPath = user.PhotoPath
+			};
+
+			var signedInUser = await _userManager.GetUserAsync(User);
+
+			if (user == signedInUser)
+			{
+				model.AllowModifications = true;
+			}
+
+			return View(model);
+		}
 	}
 }

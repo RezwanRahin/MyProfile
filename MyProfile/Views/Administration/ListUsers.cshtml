@@ -35,7 +35,7 @@ else
 				<form method="post">
 					<a asp-controller="Account" asp-action="Details" asp-route-username="@user.UserName" class="btn btn-primary"
 					   style="width: 75px">Details</a>
-					<a class="btn btn-primary" style="width: 75px">Edit</a>
+					<a asp-action="EditUser" asp-route-id="@user.Id" class="btn btn-primary" style="width: 75px">Edit</a>
 
 					<span id="confirmDeleteSpan_@user.Id" style="display: none">
 						<span>Are you sure you want to delete?</span>

@@ -60,5 +60,39 @@ namespace MyProfile.Controllers
 
 			return View(model);
 		}
+
+		[HttpPost]
+		public async Task<IActionResult> EditUser(EditUserViewModel model)
+		{
+			var user = await _userManager.FindByIdAsync(model.Id);
+
+			if (user == null)
+			{
+				Response.StatusCode = 404;
+				ViewBag.ErrorMessage = $"User with Id = {model.Id} cannot be found";
+				return View("NotFound");
+			}
+
+			user.FirstName = model.FirstName;
+			user.LastName = model.LastName;
+			user.Email = model.Email;
+			user.UserName = model.UserName;
+			user.Gender = model.Gender;
+			user.DOB = model.DOB;
+
+			var result = await _userManager.UpdateAsync(user);
+
+			if (result.Succeeded)
+			{
+				return RedirectToAction("ListUsers");
+			}
+
+			foreach (var error in result.Errors)
+			{
+				ModelState.AddModelError(string.Empty, error.Description);
+			}
+
+			return View(model);
+		}
 	}
 }

@@ -293,5 +293,35 @@ namespace MyProfile.Controllers
 
 			return View("ListRoles");
 		}
+
+		[HttpGet]
+		public async Task<IActionResult> EditUsersInRole(string roleId)
+		{
+			ViewBag.roleId = roleId;
+
+			var role = await _roleManager.FindByIdAsync(roleId);
+
+			if (role == null)
+			{
+				ViewBag.ErrorMessage = $"Role with Id = {roleId} cannot be found";
+				return View("NotFound");
+			}
+
+			var model = new List<UserRoleViewModel>();
+
+			foreach (var user in _userManager.Users.ToList())
+			{
+				var userRoleViewModel = new UserRoleViewModel
+				{
+					UserId = user.Id,
+					UserName = user.UserName,
+					IsSelected = await _userManager.IsInRoleAsync(user, role.Name)
+				};
+
+				model.Add(userRoleViewModel);
+			}
+
+			return View(model);
+		}
 	}
 }

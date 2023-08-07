@@ -178,5 +178,11 @@ namespace MyProfile.Controllers
 
 			return View("ListUsers");
 		}
+
+		[HttpGet]
+		public IActionResult CreateRole()
+		{
+			return View();
+		}
 	}
 }

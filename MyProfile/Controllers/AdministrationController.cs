@@ -208,5 +208,12 @@ namespace MyProfile.Controllers
 
 			return View(model);
 		}
+
+		[HttpGet]
+		public IActionResult ListRoles()
+		{
+			var roles = _roleManager.Roles;
+			return View(roles);
+		}
 	}
 }

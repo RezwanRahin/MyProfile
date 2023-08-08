@@ -1,10 +1,12 @@
-﻿using MyProfile.ViewModels;
+﻿using Microsoft.AspNetCore.Authorization;
+using MyProfile.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MyProfile.Models;
 
 namespace MyProfile.Controllers
 {
+	[Authorize(Roles = "Admin")]
 	public class AdministrationController : Controller
 	{
 		private readonly UserManager<ApplicationUser> _userManager;

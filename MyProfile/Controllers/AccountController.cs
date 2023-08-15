@@ -251,5 +251,31 @@ namespace MyProfile.Controllers
 
 			return RedirectToAction("Details", new { username = user.UserName });
 		}
+
+		[HttpGet]
+		[Authorize]
+		[Route("[controller]/[action]/{username}")]
+		public async Task<IActionResult> ChangePassword(string username)
+		{
+			var user = await _userManager.FindByNameAsync(username);
+
+			if (user == null)
+			{
+				Response.StatusCode = 404;
+				ViewBag.ErrorMessage = $"User with Username = {username} cannot be found";
+				return View("NotFound");
+			}
+
+			var signedInUser = await _userManager.GetUserAsync(User);
+
+			if (user != signedInUser)
+			{
+				return RedirectToAction("AccessDenied");
+			}
+
+			var model = new ChangePasswordViewModel { UserName = user.UserName };
+
+			return View(model);
+		}
 	}
 }

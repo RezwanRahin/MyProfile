@@ -12,11 +12,14 @@ namespace MyProfile.Controllers
 	{
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly SignInManager<ApplicationUser> _signInManager;
+		private readonly IWebHostEnvironment _hostEnvironment;
 
-		public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+		public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
+			IWebHostEnvironment hostEnvironment)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
+			_hostEnvironment = hostEnvironment;
 		}
 
 		[HttpGet, HttpPost]

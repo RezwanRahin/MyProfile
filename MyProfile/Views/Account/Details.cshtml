@@ -51,7 +51,8 @@
 		<div class="d-flex justify-content-center mt-3">
 			<div>
 				<a asp-action="Edit" asp-route-username="@Model.Username" class="btn btn-primary">Edit Profile</a>
-				<a class="btn btn-primary">Change Password</a>
+				<a asp-action="ChangePassword" asp-route-username="@Model.Username" class="btn btn-primary">Change
+					Password</a>
 			</div>
 		</div>
 	}

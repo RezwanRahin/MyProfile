@@ -169,9 +169,12 @@ namespace MyProfile.Controllers
 
 			var signedInUser = await _userManager.GetUserAsync(User);
 
-			if (user == signedInUser)
+			if (signedInUser != null)
 			{
-				model.AllowModifications = true;
+				if (user == signedInUser || await _userManager.IsInRoleAsync(signedInUser, "Admin"))
+				{
+					model.AllowModifications = true;
+				}
 			}
 
 			return View(model);

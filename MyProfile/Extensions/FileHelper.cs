@@ -15,5 +15,21 @@ namespace MyProfile.Extensions
 
 			return uniqueFileName;
 		}
+
+		public static async Task DeleteImageFile(this string filePath, IWebHostEnvironment hostEnvironment)
+		{
+			filePath = Path.Combine(hostEnvironment.WebRootPath, "images", filePath);
+
+			try
+			{
+				GC.Collect();
+				GC.WaitForPendingFinalizers();
+				await Task.Run(() => File.Delete(filePath));
+			}
+			catch (Exception)
+			{
+				// ignored
+			}
+		}
 	}
 }

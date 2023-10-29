@@ -94,5 +94,26 @@ namespace MyProfile.Controllers
 
 			return View(model);
 		}
+
+		[HttpGet]
+		public async Task<IActionResult> ResetPassword(string username)
+		{
+			var user = await _userManager.FindByNameAsync(username);
+
+			if (user == null)
+			{
+				Response.StatusCode = 404;
+				ViewBag.ErrorMessage = $"User with username = {username} cannot be found";
+				return View("NotFound");
+			}
+
+			var model = new ResetPasswordViewModel
+			{
+				UserName = user.UserName,
+				Token = await _userManager.GeneratePasswordResetTokenAsync(user)
+			};
+
+			return View(model);
+		}
 	}
 }

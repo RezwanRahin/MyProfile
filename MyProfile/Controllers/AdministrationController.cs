@@ -115,5 +115,41 @@ namespace MyProfile.Controllers
 
 			return View(model);
 		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+		{
+			if (!ModelState.IsValid)
+			{
+				return View(model);
+			}
+
+			var user = await _userManager.FindByNameAsync(model.UserName);
+
+			if (user == null)
+			{
+				Response.StatusCode = 404;
+				ViewBag.ErrorMessage = $"User with username = {model.UserName} cannot be found";
+				return View("NotFound");
+			}
+
+			var result = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
+
+			if (!result.Succeeded)
+			{
+				foreach (var error in result.Errors)
+				{
+					ModelState.AddModelError(string.Empty, error.Description);
+				}
+				return View();
+			}
+
+			ViewBag.Title = "Reset Password";
+			ViewBag.Username = user.UserName;
+			ViewBag.Message = "Password Reset successful.";
+
+			return View("PasswordConfirmation");
+		}
 	}
 }

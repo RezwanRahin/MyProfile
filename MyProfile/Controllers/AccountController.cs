@@ -270,6 +270,11 @@ namespace MyProfile.Controllers
 
 			if (user != signedInUser)
 			{
+				if (await _userManager.IsInRoleAsync(signedInUser, "Admin"))
+				{
+					return RedirectToAction("ResetPassword", "Administration", new { username = user.UserName });
+				}
+
 				return RedirectToAction("AccessDenied");
 			}
 

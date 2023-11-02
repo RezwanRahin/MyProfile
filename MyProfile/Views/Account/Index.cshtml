@@ -25,7 +25,8 @@ else
 				<h5 class="card-title d-inline-block">@user.UserName</h5>
 			</div>
 			<div class="card-footer">
-				<a class="btn btn-primary" style="width: 75px">Details</a>
+				<a asp-controller="Account" asp-action="Details" asp-route-username="@user.UserName" class="btn btn-primary"
+				   style="width: 75px">Details</a>
 			</div>
 		</div>
 	}

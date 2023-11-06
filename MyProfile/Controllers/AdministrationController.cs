@@ -198,7 +198,7 @@ namespace MyProfile.Controllers
 
 			if (result.Succeeded)
 			{
-				return RedirectToAction("Index", "Administration");
+				return RedirectToAction("ListRoles", "Administration");
 			}
 
 			foreach (var error in result.Errors)

@@ -44,7 +44,7 @@ else
 					@* <a asp-controller="Administration" asp-action="" asp-route-id="@role.Id" class="btn btn-primary">Edit</a>
 			*@
 					@* } *@
-					<a asp-action="" asp-route-id="@role.Id" class="btn btn-primary" style="width: 75px">Edit</a>
+					<a asp-action="EditRole" asp-route-id="@role.Id" class="btn btn-primary" style="width: 75px">Edit</a>
 
 					<span id="confirmDeleteSpan_@role.Id" style="display: none">
 						<span>Are you sure you want to delete?</span>

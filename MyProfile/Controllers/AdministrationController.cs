@@ -323,5 +323,44 @@ namespace MyProfile.Controllers
 
 			return View(model);
 		}
+
+		[HttpPost]
+		public async Task<IActionResult> EditUsersInRole(List<UserRoleViewModel> model, string roleId)
+		{
+			var role = await _roleManager.FindByIdAsync(roleId);
+
+			if (role == null)
+			{
+				ViewBag.ErrorMessage = $"Role with Id = {roleId} cannot be found";
+				return View("NotFound");
+			}
+
+			if (model.Any())
+			{
+				for (int i = 0; i < model.Count; i++)
+				{
+					var user = await _userManager.FindByIdAsync(model[i].UserId);
+					IdentityResult result = null;
+
+					if (model[i].IsSelected && !(await _userManager.IsInRoleAsync(user, role.Name)))
+					{
+						result = await _userManager.AddToRoleAsync(user, role.Name);
+					}
+					else if (!model[i].IsSelected && await _userManager.IsInRoleAsync(user, role.Name))
+					{
+						result = await _userManager.RemoveFromRoleAsync(user, role.Name);
+					}
+
+					if (result == null || result.Succeeded) continue;
+					foreach (var error in result.Errors)
+					{
+						ModelState.AddModelError(string.Empty, error.Description);
+					}
+					return RedirectToAction("EditUsersInRole", new { Id = roleId });
+				}
+			}
+
+			return RedirectToAction("EditRole", new { Id = roleId });
+		}
 	}
 }

@@ -187,7 +187,7 @@ namespace MyProfile.Controllers
 			var user = await _userManager.FindByNameAsync(username);
 			var signedInUser = await _userManager.GetUserAsync(User);
 
-			if (user != signedInUser)
+			if (user != signedInUser && !await _userManager.IsInRoleAsync(signedInUser, "Admin"))
 			{
 				return RedirectToAction("AccessDenied");
 			}

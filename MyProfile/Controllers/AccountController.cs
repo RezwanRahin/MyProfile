@@ -277,5 +277,41 @@ namespace MyProfile.Controllers
 
 			return View(model);
 		}
+
+		[HttpPost]
+		[Authorize]
+		public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+		{
+			if (!ModelState.IsValid)
+			{
+				return View(model);
+			}
+
+			var user = await _userManager.FindByNameAsync(model.UserName);
+			if (user == null)
+			{
+				Response.StatusCode = 404;
+				ViewBag.ErrorMessage = $"User with Username = {model.UserName} cannot be found";
+				return View("NotFound");
+			}
+
+			var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+			if (!result.Succeeded)
+			{
+				foreach (var error in result.Errors)
+				{
+					ModelState.AddModelError(string.Empty, error.Description);
+				}
+				return View();
+			}
+
+			await _signInManager.RefreshSignInAsync(user);
+
+			ViewBag.Title = "Change Password";
+			ViewBag.Username = user.UserName;
+			ViewBag.Message = "User Password successfully changed.";
+
+			return View("PasswordConfirmation");
+		}
 	}
 }

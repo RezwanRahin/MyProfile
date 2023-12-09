@@ -172,5 +172,39 @@ namespace MyProfile.Controllers
 
 			return View(model);
 		}
+
+		[HttpGet]
+		[Authorize]
+		public async Task<IActionResult> Edit(string username)
+		{
+			var user = await _userManager.FindByNameAsync(username);
+			var signedInUser = await _userManager.GetUserAsync(User);
+
+			if (user != signedInUser)
+			{
+				return RedirectToAction("AccessDenied");
+			}
+
+			if (user == null)
+			{
+				Response.StatusCode = 404;
+				ViewBag.ErrorMessage = $"User with Username = {username} cannot be found";
+				return View("NotFound");
+			}
+
+			var model = new EditProfileViewModel
+			{
+				Id = user.Id,
+				FirstName = user.FirstName,
+				LastName = user.LastName,
+				Email = user.Email,
+				Username = user.UserName,
+				Gender = user.Gender,
+				DOB = user.DOB,
+				PhotoPath = user.PhotoPath
+			};
+
+			return View(model);
+		}
 	}
 }

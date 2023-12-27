@@ -16,5 +16,12 @@ namespace MyProfile.Controllers
 			_userManager = userManager;
 			_signInManager = signInManager;
 		}
+
+		[HttpGet, HttpPost]
+		public async Task<IActionResult> IsEmailInUse(string email)
+		{
+			var user = await _userManager.FindByEmailAsync(email);
+			return user == null ? Json(true) : Json($"Email {email} is already in use");
+		}
 	}
 }

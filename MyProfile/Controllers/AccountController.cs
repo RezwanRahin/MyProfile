@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyProfile.Models;
+using MyProfile.ViewModels;
 
 namespace MyProfile.Controllers
 {
@@ -44,6 +45,15 @@ namespace MyProfile.Controllers
 		{
 			var result = await _userManager.Users.AnyAsync(u => u.UserName == username && u.Id != id);
 			return result ? Json($"Username '{username}' is already in use") : Json(true);
+		}
+
+		[Route("Profiles")]
+		public async Task<IActionResult> Index()
+		{
+			var users = await _userManager.Users.ToListAsync();
+			var model = users.Select(u => new ProfileViewModel(u)).ToList();
+
+			return View(model);
 		}
 	}
 }

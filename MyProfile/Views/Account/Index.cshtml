@@ -1,0 +1,32 @@
+@model IEnumerable<ProfileViewModel>
+
+@{
+	ViewData["Title"] = "Profiles";
+}
+
+<h1 class="my-5 text-center">All Profiles</h1>
+
+@if (!Model.Any())
+{
+	<div class="card">
+		<div class="card-header">
+			No users created yet
+		</div>
+	</div>
+}
+else
+{
+	foreach (var user in Model)
+	{
+		<div class="card mb-4">
+			<div class="card-body">
+				<img src="@user.PhotoPath" alt="@user.UserName" asp-append-version="true"
+					 class="d-inline-block rounded-circle me-3" width="35px" height="35px">
+				<h5 class="card-title d-inline-block">@user.UserName</h5>
+			</div>
+			<div class="card-footer">
+				<a class="btn btn-primary" style="width: 75px">Details</a>
+			</div>
+		</div>
+	}
+}
